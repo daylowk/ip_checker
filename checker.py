@@ -24,7 +24,17 @@ def check_ip(ip):
     'ipAddress': ip
     }
 
-    response = requests.get(url, headers=headers, params=params)
+    try:
+        response = requests.get(url=url,
+            headers=headers,
+            params=params,
+            timeout=10
+            )
+
+        response.raise_for_status()
+    except requests.RequestException as error:
+        print(f'API request failed: {error}')
+        return None
 
     return response
 
