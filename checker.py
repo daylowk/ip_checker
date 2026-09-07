@@ -1,6 +1,7 @@
 import argparse
 import ipaddress
 import os
+import json
 
 import requests
 from dotenv import load_dotenv
@@ -52,11 +53,46 @@ def risk_score(score):
     else:
         return 'Critical'
 
+def text_output(data):
+    print(f'IP: {data['ipAddress']}')
+    print(f'Country: {data['countryCode']}')
+    print(f'ISP: {data['isp']}')
+    hostnames = data['hostnames']
+    if hostnames:
+        print(f'Host Name: {', '.join(hostnames)}')
+    else:
+        print('Host Name: None')
+    print(f'Domain: {data['domain']}')
+    print()
+    print(f'Abuse Confidence Score: {data['abuseConfidenceScore']}')
+    print(f'Total Reports: {data['totalReports']}')
+    print(f'Distinct Users Reports: {data['numDistinctUsers']}')
+    print(f'Last Report: {data['lastReportedAt']}')
+    print()
+    print(f'Risk: {risk_score(data['abuseConfidenceScore'])}')
+
+def json_output(data):
+    output = {
+        'data': data,
+        'analysis': {
+            'risk': risk_score(data['abuseConfidenceScore'])
+        }
+    }
+
+    print(json.dumps(output, indent=4))
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     'ip',
     metavar='IP',
     help='IP address used for the consultation.'
+)
+parser.add_argument(
+    '-o',
+    '--output',
+    choices=['text','json'],
+    default='text',
+    help='Which output to return.'
 )
 
 args = parser.parse_args()
@@ -68,21 +104,9 @@ try:
     data = check_ip(ip)
 
     if data is not None:
-        print(f'IP: {data['ipAddress']}')
-        print(f'Country: {data['countryCode']}')
-        print(f'ISP: {data['isp']}')
-        hostnames = data['hostnames']
-        if hostnames:
-            print(f'Host Name: {', '.join(hostnames)}')
+        if args.output == 'text':
+            text_output(data)
         else:
-            print('Host Name: None')
-        print(f'Domain: {data['domain']}')
-        print()
-        print(f'Abuse Confidence Score: {data['abuseConfidenceScore']}')
-        print(f'Total Reports: {data['totalReports']}')
-        print(f'Distinct Users Reports: {data['numDistinctUsers']}')
-        print(f'Last Report: {data['lastReportedAt']}')
-        print()
-        print(f'Risk: {risk_score(data['abuseConfidenceScore'])}')
+            json_output(data)
 except ipaddress.AddressValueError:
     print('IP inválido')
