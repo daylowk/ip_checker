@@ -40,7 +40,7 @@ def check_ip(ip):
         print(f'API request failed: {error}')
         return None
 
-    return response
+    return response.json()['data']
 
 def risk_score(score):
     if score < LOW_THRESHOLD:
@@ -65,14 +65,17 @@ ip = args.ip
 
 try:
     ipaddress.IPv4Address(ip)
-    response = check_ip(ip)
+    data = check_ip(ip)
 
-    if response is not None:
-        data = response.json()['data']
+    if data is not None:
         print(f'IP: {data['ipAddress']}')
         print(f'Country: {data['countryCode']}')
         print(f'ISP: {data['isp']}')
-        print(f'Host Name: {data['hostnames']}')
+        hostnames = data['hostnames']
+        if hostnames:
+            print(f'Host Name: {', '.join(hostnames)}')
+        else:
+            print('Host Name: None')
         print(f'Domain: {data['domain']}')
         print()
         print(f'Abuse Confidence Score: {data['abuseConfidenceScore']}')
