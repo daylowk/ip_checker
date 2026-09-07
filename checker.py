@@ -52,8 +52,17 @@ ip = args.ip
 try:
     ipaddress.IPv4Address(ip)
     response = check_ip(ip)
-    print(ip)
-    print(response.status_code)
-    print(response.json())
+    data = response.json()['data']
+    print(f'IP: {data['ipAddress']}')
+    print(f'Country: {data['countryCode']}')
+    print(f'ISP: {data['isp']}')
+    print(f'Host Name: {data['hostnames']}')
+    print(f'Domain: {data['domain']}')
+    print()
+    print(f'Abuse Confidence Score: {data['abuseConfidenceScore']}')
+    print(f'Total Reports: {data['totalReports']}')
+    print(f'Distinct Users Reports: {data['numDistinctUsers']}')
+    print(f'Last Report: {data['lastReportedAt']}')
+    print()
 except ipaddress.AddressValueError:
     print('IP inválido')
