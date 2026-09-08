@@ -1,4 +1,3 @@
-import ipaddress
 import os
 import json
 
@@ -16,7 +15,7 @@ LOW_THRESHOLD = 25
 MEDIUM_THRESHOLD = 50
 HIGH_THRESHOLD = 75
 
-def check_ip(ip):
+def check_api(ip):
     url = 'https://api.abuseipdb.com/api/v2/check'
 
     headers = {
@@ -80,17 +79,11 @@ def json_output(data):
 
     print(json.dumps(output, indent=4))
 
-def check_ip(ip):
-    data 
-
-try:
-    ipaddress.IPv4Address(ip)
-    data = check_ip(ip)
+def check_ip(ip, output):
+    data = check_api(ip)
 
     if data is not None:
-        if args.output == 'text':
+        if output == 'text':
             text_output(data)
         else:
             json_output(data)
-except ipaddress.AddressValueError:
-    print('IP inválido')
