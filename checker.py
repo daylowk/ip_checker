@@ -1,7 +1,7 @@
 import argparse
 import ipaddress
 from checkers.checkeripdb import check_ip as abuse_check
-'''from checkers.checkervt import check_ip as vt_check'''
+from checkers.checkervt import check_ip as vt_check
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -32,6 +32,9 @@ try:
     ipaddress.IPv4Address(ip)
     if args.api in ('AbuseIPDB', 'All'):
         abuse_check(ip, args.output)
+
+    if args.api in ('VirusTotal', 'All'):
+        vt_check(ip, args.output)
     
 except ipaddress.AddressValueError:
     print('IP inválido.')

@@ -19,12 +19,12 @@ def check_api(ip):
     url = 'https://api.abuseipdb.com/api/v2/check'
 
     headers = {
-    'key': api_key,
-    'Accept': 'application/json'
+        'key': api_key,
+        'Accept': 'application/json'
     }
 
     params = {
-    'ipAddress': ip
+        'ipAddress': ip
     }
 
     try:
