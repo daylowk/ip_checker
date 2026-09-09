@@ -52,6 +52,10 @@ def risk_score(score):
         return 'Critical'
 
 def text_output(data):
+    print('—————————————————————————————————————————')
+    print('AbuseIPDB')
+    print('———————————————————')
+    print()
     print(f'IP: {data['ipAddress']}')
     print(f'Country: {data['countryCode']}')
     print(f'ISP: {data['isp']}')
@@ -68,6 +72,7 @@ def text_output(data):
     print(f'Last Report: {data['lastReportedAt']}')
     print()
     print(f'Risk: {risk_score(data['abuseConfidenceScore'])}')
+    print('—————————————————————————————————————————')
 
 def json_output(data):
     output = {

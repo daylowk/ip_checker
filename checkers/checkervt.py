@@ -32,7 +32,7 @@ def check_api(ip):
 
 def text_output(data):
     print('—————————————————————————————————————————')
-    print('Virus Total')
+    print('VirusTotal')
     print('———————————————————')
     print()
     print(f'IP: {data['id']}')
