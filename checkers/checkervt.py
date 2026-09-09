@@ -8,6 +8,9 @@ load_dotenv()
 
 api_key = os.getenv('VIRUSTOTAL_API_KEY')
 
+if api_key is None:
+    raise RuntimeError('VIRUSTOTAL_API_KEY is not set.')
+
 def check_api(ip):
     url = f'https://www.virustotal.com/api/v3/ip_addresses/{ip}'
 
