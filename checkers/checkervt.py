@@ -52,10 +52,14 @@ def text_output(data):
     print(f'\tTimeout: {data['attributes']['last_analysis_stats']['timeout']}')
     print('—————————————————————————————————————————')
 
+def json_output(data):
+    print(json.dumps(data, indent=4))
+
 def check_ip(ip, output):
     data = check_api(ip)
 
     if data is not None:
         if output == 'text':
             text_output(data)
-        
+        else:
+            json_output(data)
